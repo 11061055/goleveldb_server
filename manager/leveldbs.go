@@ -21,7 +21,6 @@ func (m *LevelDBManager) Construct() {
 
 func (m *LevelDBManager) RefreshAsync() {
 
-    done   := make(chan bool)
     ticker := time.NewTicker(5 * time.Minute)
 
     go func() {
@@ -30,17 +29,15 @@ func (m *LevelDBManager) RefreshAsync() {
 
         select {
 
-          case t := <-ticker.C:
-            m.Refresh()
+          case _ = <-ticker.C:
+            go m.Refresh()
 
            //default:
-           //  done < true
+           //  done <- true
 
             }
         }
     }()
-
-    < done
 }
 
 func (m *LevelDBManager) Refresh() {
@@ -167,6 +164,7 @@ func (ldb *LevelDB) open() (err error) {
     return
     //TODO
   }
+
   ldb.setDB(db)
   return
 }
