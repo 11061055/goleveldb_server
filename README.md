@@ -2,7 +2,7 @@
 
 Golang leveldb as a KV server. It Supports user-defined  file,
 
-which acts as a namespace also. Cat be used in different scene.
+which acts as a namespace . Cat be used in different scene.
 
 ## Put data
 
