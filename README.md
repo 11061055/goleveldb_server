@@ -27,7 +27,7 @@ After curl, the key kkk is deleted  from  file 2020.03.20
 
 ## Description
 
-the above scene name file as date, data will be saved in /data/logs/leveldb/db/2020.03.20/ and we can easily use
+the above scene uses file as date, data will be saved in /data/logs/leveldb/db/2020.03.20/ and we can easily use
 
 it to save log file and rotate everyday to delete old one, file can also be distinguished according to different 
 
