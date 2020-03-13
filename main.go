@@ -57,7 +57,7 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
       key = val[0]
     }
 
-    if len(path) == 0 || len(act) == 0 || len(file) == 0 || len(body) == 0 {
+    if (len(path) == 0) || (len(act) == 0) || (len(file) == 0) {
       return
     }
 
