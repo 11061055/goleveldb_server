@@ -3,6 +3,7 @@ package manager
 import (
     "time"
     "sync"
+    "strings"
     "github.com/syndtr/goleveldb/leveldb"
 )
 
