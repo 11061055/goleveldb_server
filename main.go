@@ -2,7 +2,6 @@ package main
 
 import (
     "errors"
-    "fmt"
     "net/http"
     "net/url"
     "io/ioutil"
@@ -15,6 +14,7 @@ var levelDBManager manager.LevelDBManager
 func main()  {
 
     levelDBManager.Construct()
+    levelDBManager.RefreshAsync()
 
     http.HandleFunc("/data",DataHandler)
 
@@ -24,7 +24,7 @@ func main()  {
 func DataHandler(w http.ResponseWriter,r *http.Request)  {
 
     path := ""
-    hour := ""
+    file := ""
     act  := ""
     key  := ""
     body := []byte{}
@@ -49,26 +49,21 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
       act = val[0]
     }
 
-    if val, ok := query["hour"]; ok {
-      hour = val[0]
+    if val, ok := query["file"]; ok {
+      file = val[0]
     }
 
     if val, ok := query["key"]; ok {
       key = val[0]
     }
 
-    if len(path) == 0 || len(act) == 0 || len(hour) == 0 || len(body) == 0 {
+    if len(path) == 0 || len(act) == 0 || len(file) == 0 || len(body) == 0 {
       return
     }
 
-    fmt.Println(path)
-    fmt.Println(act)
-    fmt.Println(hour)
-    fmt.Println(string(body[:]))
-
-    db, err := levelDBManager.Open(hour)
+    db, err := levelDBManager.Open(file)
     if err != nil {
-      w.Write([]byte(err.Error()))
+      w.Write([]byte("leveldb server inner error " + err.Error()))
       return
     }
     defer levelDBManager.Close(db)
@@ -92,7 +87,7 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
      }
 
      if err != nil {
-       w.Write([]byte(err.Error()))
+       w.Write([]byte("leveldb server inner error " + err.Error()))
      } else {
        w.Write(ret)
      }

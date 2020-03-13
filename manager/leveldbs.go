@@ -19,6 +19,30 @@ func (m *LevelDBManager) Construct() {
     m.levelDBs = make(map[string]*LevelDB)
 }
 
+func (m *LevelDBManager) RefreshAsync() {
+
+    done   := make(chan bool)
+    ticker := time.NewTicker(5 * time.Minute)
+
+    go func() {
+
+      for {
+
+        select {
+
+          case t := <-ticker.C:
+            m.Refresh()
+
+           //default:
+           //  done < true
+
+            }
+        }
+    }()
+
+    < done
+}
+
 func (m *LevelDBManager) Refresh() {
 
     m.Lock()
