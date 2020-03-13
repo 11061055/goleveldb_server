@@ -1,4 +1,4 @@
-# goleveldb_server
+# goleveldb_http_server
 
 Golang leveldb as a KV server. It Supports user-defined  file,
 
