@@ -126,6 +126,9 @@ func (ldb *LevelDB) getPath() string {
 }
 
 func (ldb *LevelDB) setPath(path string) {
+   if strings.Contains(path, "..") {
+     panic("dangerous operation")
+   }
    ldb.path = path
 }
 
