@@ -1,37 +1,41 @@
 # goleveldb_http_server
 
-Golang leveldb as a KV server. It Supports user-defined  file,
-
-which acts as a namespace . Cat be used in different scene.
-
-## Put data
-
-curl --data "123456" '127.0.0.1:8880/data?act=put&key=kkk&file=2020.03.20'
-
-
-After curl, file 2020.03.20 contains a key named kkk and with value 123456
-
-## Get data
-
-curl '127.0.0.1:8880/data?act=get&key=kkk&file=2020.03.20'
-
-
-After curl, we get the value of key kkk in file 2020.03.20
-
-## Del data
-
-curl '127.0.0.1:8880/data?act=del&key=kkk&file=2020.03.20'
-
-
-After curl, the key kkk is deleted  from  file 2020.03.20
 
 ## Description
 
-the above scene uses file as date, data will be saved in /data/logs/leveldb/db/2020.03.20/ and we can easily use
+Golang leveldb as a KV server. It Supports user-defined table,
 
-it to save log file and rotate everyday to delete old one, file can also be distinguished according to different 
+which acts as a namespace . Cat be used in different scene.
 
-service. one should be care that file could not contain ../ or .. to avoid overwrite directory(Never run as root).
+## Get data
+
+curl '127.0.0.1:8880/data?table=2020.03.20&act=get&key=kkk'
+
+
+After curl, we get the value of key kkk in table 2020.03.20
+
+## Del data
+
+curl '127.0.0.1:8880/data?table=2020.03.20&act=del&key=kkk'
+
+
+After curl, we delete the key kkk from the table 2020.03.20
+
+## Put data
+
+curl --data "123456" '127.0.0.1:8880/data?table=2020.03.20&act=put&key=kkk'
+
+
+After curl, we insert the key kkk with value 123456 to the table 2020.03.20
+
+
+## Description
+
+The above scene use date as table. Data will be saved in /data/logs/leveldb/db/2020.03.20/, so we can easily use
+
+it to save log file and rotate everyday to delete old one. Table can also be distinguished according to different 
+
+service. One should be care that table should not have ../ or .. to avoid overwrite directory (Never run as root).
 
 ## Further more work
 
