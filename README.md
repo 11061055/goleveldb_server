@@ -61,3 +61,6 @@ One should be care that table should not have ../ or .. to avoid overwrite direc
 
 2. 可以在前面增加一个proxy以实现key分布式。(distributed)
 ```
+
+
+Refer : https://github.com/syndtr/goleveldb
