@@ -43,11 +43,11 @@ After curl, we insert the key kkk with value 123456 to the table 2020.03.20
 ## Description
 
 ```
-The above uses date as table. Data will be saved in /data/logs/leveldb/db/2020.03.20/, so we can easily use
+The above uses date as table. Data is saved in /data/logs/leveldb/db/2020.03.20/, so we can easily use
 
-it to save log and rotate everyday to delete old one. Table can also be distinguished according to different 
+it to save log and rotate everyday to del old. Table can also be named according to different services. 
 
-service. One should be care table should not have ../ or .. to avoid overwrite directory (Never run as root).
+One should be care that table should not have ../ or .. to avoid overwrite directory(Never run as root).
 ```
 
 
