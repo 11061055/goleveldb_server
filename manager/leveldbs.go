@@ -1,9 +1,11 @@
 package manager
 
 import (
-    "time"
+
     "sync"
     "strings"
+    "time"
+
     "github.com/syndtr/goleveldb/leveldb"
 )
 
