@@ -51,18 +51,18 @@ func (m *LevelDBManager) Refresh() {
     }
 }
 
-func (m *LevelDBManager) Open(path string) (*LevelDB, error) {
+func (m *LevelDBManager) Open(table string) (*LevelDB, error) {
 
     m.Lock()
     defer m.Unlock()
 
-    if db, ok := m.levelDBs[path]; !ok {
+    if db, ok := m.levelDBs[table]; !ok {
       db = new (LevelDB)
-      db.setPath(path)
-      m.levelDBs[path] = db
+      db.setTable(table)
+      m.levelDBs[table] = db
     }
 
-    db := m.levelDBs[path]
+    db := m.levelDBs[table]
 
     err := db.softOpen()
 
@@ -82,9 +82,9 @@ func (m *LevelDBManager) Close(ldb *LevelDB) (err error) {
       return
     }
 
-    path := ldb.getPath()
+    table := ldb.getTable()
 
-    if _, ok := m.levelDBs[path]; !ok {
+    if _, ok := m.levelDBs[table]; !ok {
       return
     }
 
@@ -96,7 +96,7 @@ func (m *LevelDBManager) Close(ldb *LevelDB) (err error) {
 type LevelDB struct {
 
     db         *leveldb.DB
-    path       string
+    table      string
     refCount   int64 
     accessTime int64 
 
@@ -122,15 +122,15 @@ func (ldb *LevelDB) setDB(db *leveldb.DB) {
    ldb.db = db
 }
 
-func (ldb *LevelDB) getPath() string {
-   return ldb.path
+func (ldb *LevelDB) getTable() string {
+   return ldb.table
 }
 
-func (ldb *LevelDB) setPath(path string) {
-   if strings.Contains(path, "..") {
+func (ldb *LevelDB) setTable(table string) {
+   if strings.Contains(table, "..") {
      panic("dangerous operation")
    }
-   ldb.path = path
+   ldb.table = table
 }
 
 func (ldb *LevelDB) getRefCount() int64 {
@@ -163,7 +163,7 @@ func (ldb *LevelDB) close() (err error) {
 }
 
 func (ldb *LevelDB) open() (err error) {
-  db, err := leveldb.OpenFile("/data/logs/leveldb/db/" + ldb.getPath(), nil)
+  db, err := leveldb.OpenFile("/data/logs/leveldb/db/" + ldb.getTable(), nil)
   if err != nil {
     return
     //TODO

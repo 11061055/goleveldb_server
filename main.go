@@ -23,57 +23,54 @@ func main()  {
 
 func DataHandler(w http.ResponseWriter,r *http.Request)  {
 
-    path := ""
-    file := ""
-    act  := ""
-    key  := ""
-    body := []byte{}
+    table := ""
+    act   := ""
+    key   := ""
 
-    body, err := ioutil.ReadAll(r.Body)
+    parsedUrl, err := url.Parse(r.URL.String())
     if  err != nil {
       return
     }
 
-    purl, err := url.Parse(r.URL.String())
+    query, err := url.ParseQuery(parsedUrl.RawQuery)
     if  err != nil {
       return
     }
-    path = purl.Path
 
-    query, err := url.ParseQuery(purl.RawQuery)
-    if  err != nil {
-      return
+    if val, ok := query["table"]; ok {
+      table = val[0]
     }
 
     if val, ok := query["act"]; ok {
       act = val[0]
     }
 
-    if val, ok := query["file"]; ok {
-      file = val[0]
-    }
-
     if val, ok := query["key"]; ok {
       key = val[0]
     }
 
-    if (len(path) == 0) || (len(act) == 0) || (len(file) == 0) {
+    if (len(table) == 0)  ||
+       (len(act) == 0)    ||
+       (len(key) == 0)    {
+
       return
     }
 
-    db, err := levelDBManager.Open(file)
+    db, err := levelDBManager.Open(table)
     if err != nil {
-      w.Write([]byte("leveldb server inner error " + err.Error()))
+      w.Write([]byte("leveldb open table error " + err.Error()))
       return
     }
     defer levelDBManager.Close(db)
 
     var ret []byte = []byte("success")
-
     switch act {
 
       case "put":
-        err      = db.Put([]byte(key), body)
+
+        if  body, err := ioutil.ReadAll(r.Body); err == nil {
+          err    = db.Put([]byte(key), body)
+        }
 
       case "get":
         ret, err = db.Get([]byte(key))
@@ -87,7 +84,7 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
      }
 
      if err != nil {
-       w.Write([]byte("leveldb server inner error " + err.Error()))
+       w.Write([]byte("leveldb error " + err.Error()))
      } else {
        w.Write(ret)
      }
