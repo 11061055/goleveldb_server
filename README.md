@@ -1,11 +1,18 @@
 # goleveldb_http_server
 
 
-## Description
 
-Golang leveldb as a KV server. It Supports user-defined table,
+## Introduction
 
-which acts as a namespace . Cat be used in different scene.
+Golang leveldb as a KV server. It supports user-defined tables,
+
+which acts as different namespaces . Cat be used in different scene.
+
+
+
+# Example
+
+
 
 ## Get data
 
@@ -29,6 +36,8 @@ curl --data "123456" '127.0.0.1:8880/data?table=2020.03.20&act=put&key=kkk'
 After curl, we insert the key kkk with value 123456 to the table 2020.03.20
 
 
+
+
 ## Description
 
 The above scene use date as table. Data will be saved in /data/logs/leveldb/db/2020.03.20/, so we can easily use
@@ -38,6 +47,9 @@ it to save log file and rotate everyday to delete old one. Table can also be dis
 
 
 service. One should be care that table should not have ../ or .. to avoid overwrite directory (Never run as root).
+
+
+
 
 ## Further more work
 
