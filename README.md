@@ -6,7 +6,7 @@
 
 ```
 Golang leveldb as a KV http server. It supports user-defined tables,
-which acts as different namespaces . Cat be used in different scene.
+which acts as different namespaces . Can be used in different scene.
 
 As each table act as a database,so I will check periodically whether
 a table is used recently, and close unused tables in RefreshAsync().
