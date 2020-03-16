@@ -6,6 +6,7 @@ import (
     "io/ioutil"
     "net/http"
     "net/url"
+    "os"
 
     "github.com/11061055/goleveldb_server/manager"
 )
@@ -18,8 +19,9 @@ func main()  {
     levelDBManager.RefreshAsync()
 
     http.HandleFunc("/data",DataHandler)
+    http.HandleFunc("/table",TableHandler)
 
-    http.ListenAndServe("0.0.0.0:8880",nil)
+    http.ListenAndServe("0.0.0.0:" + os.Getenv("LEVELDB_PORT") ,nil)
 }
 
 func DataHandler(w http.ResponseWriter,r *http.Request)  {
@@ -89,4 +91,37 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
      } else {
        w.Write(ret)
      }
+}
+
+
+func TableHandler(w http.ResponseWriter,r *http.Request)  {
+
+    act   := ""
+
+    parsedUrl, err := url.Parse(r.URL.String())
+    if  err != nil {
+      return
+    }
+
+    query, err := url.ParseQuery(parsedUrl.RawQuery)
+    if  err != nil {
+      return
+    }
+
+    if val, ok := query["act"]; ok {
+      act = val[0]
+    }
+
+    if ((len(act) == 0))    {
+
+      return
+    }
+
+    switch act {
+
+      case "list":
+
+        tables := levelDBManager.List()
+        w.Write([]byte(tables))
+    }
 }

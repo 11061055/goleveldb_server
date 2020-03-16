@@ -5,6 +5,7 @@ import (
     "sync"
     "strings"
     "time"
+    "os"
 
     "github.com/syndtr/goleveldb/leveldb"
 )
@@ -51,6 +52,21 @@ func (m *LevelDBManager) Refresh() {
     for _, db := range m.levelDBs {
       db.refresh()
     }
+}
+
+func (m *LevelDBManager) List() (tables string) {
+
+    tables = ""
+
+    m.Lock()
+    defer m.Unlock()
+
+    for table, db := range m.levelDBs {
+      if nil != db.getDB() {
+        tables = tables + table + "\n"
+      }
+    }
+    return
 }
 
 func (m *LevelDBManager) Open(table string) (*LevelDB, error) {
@@ -165,7 +181,7 @@ func (ldb *LevelDB) close() (err error) {
 }
 
 func (ldb *LevelDB) open() (err error) {
-  db, err := leveldb.OpenFile("/data/logs/leveldb/db/" + ldb.getTable(), nil)
+  db, err := leveldb.OpenFile("/data/app/leveldb/db/" + os.Getenv("LEVELDB_PORT") + "/" + ldb.getTable(), nil)
   if err != nil {
     return
     //TODO
