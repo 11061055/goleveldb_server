@@ -6,7 +6,13 @@
 
 ```
 Golang leveldb as a KV http server. It supports user-defined tables,
-which acts as different namespaces . Cat be used in different scene.
+which acts as different namespaces . Can be used in different scene.
+
+As each table act as a database,so I will check periodically whether
+a table is used recently, and close unused tables in RefreshAsync().
+
+If you want to deploy several instances on a server,  it is possible
+for you to use different ports and different directories to log data.
 ```
 
 
@@ -64,3 +70,5 @@ One should be care that table should not have ../ or .. to avoid overwrite direc
 
 
 Refer : https://github.com/syndtr/goleveldb
+
+Cited : https://github.com/11061055/Transfer (在这里使用过)
