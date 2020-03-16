@@ -18,7 +18,15 @@ for you to use different ports and different directories to log data.
 
 # Example
 
+## env
 
+```
+LEVELDB_PORT defines the port server listen on,and the data
+
+will be saved in directory /data/app/leveldb/db/LEVELDB_PORT
+
+So you can deploy many instances using different LEVELDB_PORT
+```
 
 ## Get data
 
