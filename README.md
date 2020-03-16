@@ -25,7 +25,9 @@ LEVELDB_PORT defines the port server listen on,and the data
 
 will be saved in directory /data/app/leveldb/db/LEVELDB_PORT
 
-So you can deploy many instances using different LEVELDB_PORT
+So you can deploy many instances using serveral LEVELDB_PORT
+
+Run this way: export LEVELDB_PORT=8880 && ./goleveldb_server
 ```
 
 ## Get data
