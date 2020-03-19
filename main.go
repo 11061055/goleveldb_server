@@ -8,6 +8,7 @@ import (
     "net/url"
     "os"
 
+    lerrors "github.com/syndtr/goleveldb/leveldb/errors"
     "github.com/11061055/goleveldb_server/manager"
 )
 
@@ -87,6 +88,11 @@ func DataHandler(w http.ResponseWriter,r *http.Request)  {
      }
 
      if err != nil {
+       if err == lerrors.ErrNotFound {
+         w.WriteHeader(404)
+       } else {
+         w.WriteHeader(500)
+       }
        w.Write([]byte("leveldb error " + err.Error()))
      } else {
        w.Write(ret)
